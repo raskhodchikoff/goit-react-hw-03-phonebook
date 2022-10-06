@@ -9,13 +9,32 @@ import { Filter } from 'components/Filter/Filter';
 import { MainTitle, ContactsTitle } from './App.styled';
 import { Box } from './Box';
 
-import saveContacts from 'db/contacts';
+// import saveContacts from 'db/contacts';
 
 export class App extends Component {
   state = {
-    contacts: saveContacts,
+    // contacts: saveContacts,
+    contacts: [],
     filter: '',
   };
+
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    const newContacts = this.state.contacts;
+    const prevContacts = prevState.contacts;
+
+    if (newContacts !== prevContacts) {
+      localStorage.setItem('contacts', JSON.stringify(newContacts));
+    }
+  }
 
   formSubmitHandler = (data, { resetForm }) => {
     resetForm();
