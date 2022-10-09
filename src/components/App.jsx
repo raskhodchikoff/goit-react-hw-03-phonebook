@@ -36,9 +36,7 @@ export class App extends Component {
     }
   }
 
-  formSubmitHandler = (data, { resetForm }) => {
-    resetForm();
-
+  formSubmitHandler = (data, actions) => {
     data.id = nanoid();
     const contacts = this.state.contacts;
     const doubleName = contacts.find(
@@ -56,6 +54,7 @@ export class App extends Component {
     this.setState(prevState => ({
       contacts: [...prevState.contacts, data],
     }));
+    actions.resetForm();
   };
 
   onFilter = e => {
